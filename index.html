@@ -253,26 +253,29 @@ async function apiFetch(payload) {
 // Load all rows from the Sheet and map them into entry objects
 async function loadFromSheet() {
   try {
-    const res  = await fetch(API_URL);
-    const json = await res.json();          // { success: true, data: [...objects] }
-    if (!json.success || !Array.isArray(json.data)) { entries = []; return; }
-    entries = json.data
-      .filter(r => r.id)                   // skip any blank rows
-      .map(r => ({
-        id:     String(r.id),
-        month:  r.month  || '',
-        enq:    r.enq    || '—',
-        type:   r.type === 'CRN' ? 'CRR' : (r.type || 'CRR'),
-        tele:   r.tele   || '',
-        prod:   r.prod   || '',
-        source: r.source || '',
-        state:  r.state  || '—',
-        status: r.status || 'WIP',
-        reason: r.reason || '',
-        notes:  r.notes  || ''
-      }));
+    const res = await fetch(API_URL);
+    const data = await res.json();
+
+    if (!Array.isArray(data) || data.length <= 1) {
+      entries = [];
+      return;
+    }
+
+    entries = data.slice(1).map(r => ({
+      id: String(r[0]),
+      month: r[1] || '',
+      enq: r[2] || '',
+      type: r[3] || 'CRR',
+      tele: r[4] || '',
+      prod: r[5] || '',
+      source: r[6] || '',
+      state: r[7] || '',
+      status: r[8] || 'WIP',
+      reason: r[9] || '',
+      notes: r[10] || ''
+    }));
   } catch(e) {
-    toast('⚠ Could not load from Sheet: ' + e.message);
+    toast('⚠ Could not load data from Google Sheet');
   }
 }
 
