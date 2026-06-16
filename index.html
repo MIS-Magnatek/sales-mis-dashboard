@@ -253,7 +253,7 @@ async function apiFetch(payload) {
 // Load all rows from the Sheet and map them into entry objects
 async function loadFromSheet() {
   try {
-    const res = await fetch(API_URL);
+    const res = await fetch(API_URL + '?t=' + Date.now(), {cache:'no-store'});
     const data = await res.json();
 
     if (!Array.isArray(data) || data.length <= 1) {
@@ -558,5 +558,6 @@ Cover: 1)Pipeline health 2)CRR vs NBD split 3)Top lead sources 4)Reasons lost + 
   document.getElementById('entry-count').textContent = 'Loading…';
   await loadFromSheet();
   renderTable();
+  renderDashboard();
 })();
 </script>
