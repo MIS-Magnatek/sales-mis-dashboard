@@ -242,50 +242,24 @@ function toast(msg, dur=2200) {
 }
 
 // ─── API HELPERS ─────────────────────────────────────────────────────────────
-async function saveEdit(id){
-
-  const entry = {
-    id,
-    month: document.getElementById('e-month').value,
-    enq: document.getElementById('e-enq').value,
-    type: document.getElementById('e-type').value,
-    tele: document.getElementById('e-tele').value,
-    prod: document.getElementById('e-prod').value,
-    source: document.getElementById('e-source').value,
-    state: document.getElementById('e-state').value,
-    status: document.getElementById('e-status').value,
-    reason: document.getElementById('e-reason').value,
-    notes: ''
-  };
-
-  console.log("Saving ID:", id);
-  console.log("Entry:", entry);
-
-  try {
-
-    const result = await apiFetch({
-      action: 'update',
-      id: id,
-      entry: entry
-    });
-
-    console.log("Update Result:", result);
-
-    if(result.success){
-      await loadFromSheet();
-      editingId = null;
-      renderTable();
-      renderDashboard();
-      toast('✓ Row updated');
-    } else {
-      alert(result.msg || 'Update failed');
-    }
-
-  } catch(err){
-    console.error(err);
-    alert('Update failed: ' + err.message);
-  }
+async function apiFetch(payload) {
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    body: JSON.stringify(payload)
+  });
+  return res.json();
 }
+
+// Load all rows from the Sheet and map them into entry objects
+async function loadFromSheet() {
+  try {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+
+    if (!Array.isArray(data) || data.length <= 1) {
+      entries = [];
+      return;
+    }
 
     entries = data
   .slice(1)
@@ -584,6 +558,5 @@ Cover: 1)Pipeline health 2)CRR vs NBD split 3)Top lead sources 4)Reasons lost + 
   document.getElementById('entry-count').textContent = 'Loading…';
   await loadFromSheet();
   renderTable();
-  renderDashboard();
 })();
 </script>
