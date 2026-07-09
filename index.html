@@ -234,6 +234,7 @@ const REASONS=[
   'Payment Terms Issues',
   'Project Cancellation'
 ];
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzWKkenhXdurcQnsSGaE7M5_Gl84y_oOuOhnJ16SFfSRzRPyzidmaDg7Mvfbu3H_Nm5/exec";
 const TYPES=['CRR','NBD'];
 
 let entries=[];
@@ -243,7 +244,21 @@ try{
 }catch(e){}
 let editingId=null;
 
-function save(){ try{ localStorage.setItem('fms_v2',JSON.stringify(entries)); }catch(e){} }
+async function save(){
+
+    try{
+        localStorage.setItem('fms_v2', JSON.stringify(entries));
+
+        await fetch(WEB_APP_URL,{
+            method:"POST",
+            body:JSON.stringify(entries)
+        });
+
+    }catch(err){
+        console.log(err);
+    }
+
+}
 function getMonths(p){ return PERIOD_MAP[p]||[p]; }
 function filterByPeriod(p){ const m=getMonths(p); return entries.filter(e=>m.includes(e.month)); }
 
@@ -488,5 +503,24 @@ Cover: 1)Pipeline health 2)CRR vs NBD split 3)Top lead sources 4)Reasons lost + 
   }
 }
 
-renderTable();
+async function loadData(){
+
+    try{
+
+        const res = await fetch(WEB_APP_URL);
+        entries = await res.json();
+
+        localStorage.setItem("fms_v2", JSON.stringify(entries));
+
+    }catch(e){
+
+        entries = JSON.parse(localStorage.getItem("fms_v2") || "[]");
+
+    }
+
+    renderTable();
+
+}
+
+loadData();
 </script>
