@@ -1,2119 +1,438 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Magnatek Sales MIS Dashboard V3</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-
-:root{
-
---primary:#0D6EFD;
---primary-light:#EAF4FF;
---secondary:#00A884;
---danger:#E53935;
---warning:#FB8C00;
---purple:#7E57C2;
---dark:#1F2937;
---text:#374151;
---border:#D6E5F2;
---bg:#F5FAFE;
---white:#FFFFFF;
-
-}
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-body{
-
-background:var(--bg);
-color:var(--text);
-
-}
-
-.wrapper{
-
-padding:20px;
-
-}
-
-.header{
-
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-background:white;
-
-padding:15px 25px;
-
-border-radius:12px;
-
-box-shadow:0 5px 15px rgba(0,0,0,.08);
-
-margin-bottom:20px;
-
-}
-
-.header-left{
-
-display:flex;
-align-items:center;
-gap:18px;
-
-}
-
-.logo{
-
-height:60px;
-
-}
-
-.title{
-
-font-size:26px;
-font-weight:700;
-color:var(--primary);
-
-}
-
-.subtitle{
-
-font-size:13px;
-color:#777;
-
-}
-
-.header-right{
-
-display:flex;
-align-items:center;
-gap:12px;
-
-}
-
-.profile{
-
-width:45px;
-height:45px;
-border-radius:50%;
-background:#dbeafe;
-display:flex;
-justify-content:center;
-align-items:center;
-font-weight:bold;
-color:#0D6EFD;
-
-}
-
-.datetime{
-
-text-align:right;
-
-}
-
-#todayDate{
-
-font-weight:600;
-
-}
-
-#liveClock{
-
-font-size:13px;
-color:#666;
-
-}
-
-.tabs{
-
-display:flex;
-gap:8px;
-flex-wrap:wrap;
-margin-bottom:20px;
-
-}
-
-.tab-btn{
-
-padding:11px 18px;
-
-background:white;
-
-border:1px solid var(--border);
-
-border-radius:8px;
-
-cursor:pointer;
-
-font-size:14px;
-
-transition:.25s;
-
-}
-
-.tab-btn:hover{
-
-background:var(--primary);
-
-color:white;
-
-}
-
-.tab-btn.active{
-
-background:var(--primary);
-
-color:white;
-
-}
-
-.page{
-
-display:none;
-
-}
-
-.page.active{
-
-display:block;
-
-animation:fade .35s;
-
-}
-
-@keyframes fade{
-
-from{
-
-opacity:0;
-transform:translateY(8px);
-
-}
-
-to{
-
-opacity:1;
-transform:translateY(0);
-
-}
-
-}
-
-.card{
-
-background:white;
-
-border-radius:12px;
-
-padding:20px;
-
-box-shadow:0 5px 12px rgba(0,0,0,.08);
-
-margin-bottom:20px;
-
-}
-
-.section-title{
-
-font-size:18px;
-
-font-weight:600;
-
-margin-bottom:15px;
-
-color:var(--primary);
-
-}
-
-.grid-4{
-
-display:grid;
-
-grid-template-columns:repeat(4,1fr);
-
-gap:18px;
-
-}
-
-.metric{
-
-padding:18px;
-
-border-radius:12px;
-
-color:white;
-
-}
-
-.metric h2{
-
-font-size:32px;
-
-margin-bottom:5px;
-
-}
-
-.metric p{
-
-font-size:13px;
-
-}
-
-.blue{
-
-background:#2196F3;
-
-}
-
-.green{
-
-background:#43A047;
-
-}
-
-.orange{
-
-background:#FB8C00;
-
-}
-
-.red{
-
-background:#E53935;
-
-}
-
-.grid-2{
-
-display:grid;
-
-grid-template-columns:1fr 1fr;
-
-gap:20px;
-
-}
-
-.chart-box{
-
-height:350px;
-
-border:1px solid var(--border);
-
-border-radius:10px;
-
-padding:15px;
-
-background:white;
-
-}
-
-.table-responsive{
-
-overflow:auto;
-
-}
-
-table{
-
-width:100%;
-
-border-collapse:collapse;
-
-}
-
-th{
-
-background:#0D6EFD;
-
-color:white;
-
-padding:12px;
-
-font-size:13px;
-
-}
-
-td{
-
-padding:11px;
-
-border-bottom:1px solid #eee;
-
-font-size:13px;
-
-}
-
-tr:hover{
-
-background:#f9fcff;
-
-}
-
-button{
-
-cursor:pointer;
-
-}
-
-.primary-btn{
-
-background:#0D6EFD;
-
-color:white;
-
-border:none;
-
-padding:10px 18px;
-
-border-radius:8px;
-
-}
-
-.success-btn{
-
-background:#43A047;
-
-color:white;
-
-border:none;
-
-padding:10px 18px;
-
-border-radius:8px;
-
-}
-
-.danger-btn{
-
-background:#E53935;
-
-color:white;
-
-border:none;
-
-padding:10px 18px;
-
-border-radius:8px;
-
-}
-
-input,
-select,
-textarea{
-
-width:100%;
-
-padding:10px;
-
-border:1px solid #D6E5F2;
-
-border-radius:8px;
-
-font-size:14px;
-
-margin-top:5px;
-
-}
-
-label{
-
-font-size:13px;
-
-font-weight:600;
-
-}
-
-.form-grid{
-
-display:grid;
-
-grid-template-columns:repeat(3,1fr);
-
-gap:18px;
-
-}
-
-.badge{
-
-padding:4px 10px;
-
-border-radius:30px;
-
-font-size:12px;
-
-font-weight:600;
-
-display:inline-block;
-
-}
-
-.badge-won{
-
-background:#DCFCE7;
-
-color:#166534;
-
-}
-
-.badge-lost{
-
-background:#FEE2E2;
-
-color:#991B1B;
-
-}
-
-.badge-wip{
-
-background:#FEF3C7;
-
-color:#92400E;
-
-}
-
-.badge-crr{
-
-background:#DBEAFE;
-
-color:#1E40AF;
-
-}
-
-.badge-nbd{
-
-background:#DCFCE7;
-
-color:#166534;
-
-}
-
-.footer{
-
-text-align:center;
-
-padding:15px;
-
-font-size:12px;
-
-color:#777;
-
-margin-top:40px;
-
-}
-
-@media(max-width:1100px){
-
-.grid-4{
-
-grid-template-columns:repeat(2,1fr);
-
-}
-
-.form-grid{
-
-grid-template-columns:repeat(2,1fr);
-
-}
-
-}
-
-@media(max-width:700px){
-
-.grid-4,
-.grid-2,
-.form-grid{
-
-grid-template-columns:1fr;
-
-}
-
-.header{
-
-flex-direction:column;
-gap:15px;
-
-}
-
-.tabs{
-
-justify-content:center;
-
-}
-
-}
-
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1rem;background:#e8f4fb;min-height:100vh;color:#0d4f6b;font-family:Arial,sans-serif}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;background:#fff;border-radius:10px;padding:.75rem 1.25rem;border:0.5px solid #b0d4e8}
+.header-title{font-size:20px;font-weight:700;color:#0d4f6b}
+.logo{height:50px;object-fit:contain;display:block}
+.tabs{display:flex;gap:4px;margin-bottom:1rem;flex-wrap:wrap}
+.tab{padding:6px 14px;border-radius:6px;border:0.5px solid #b0d4e8;font-size:13px;cursor:pointer;color:#1a5f7a;background:#d0eaf7}
+.tab.active{background:#1a7fa8;color:#fff;font-weight:600;border-color:#1a7fa8}
+.card{background:#fff;border:0.5px solid #b0d4e8;border-radius:10px;padding:1rem 1.25rem;margin-bottom:12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem}
+.metric{background:#d0eaf7;border-radius:8px;padding:1rem;text-align:center}
+.metric .val{font-size:22px;font-weight:700;color:#0d4f6b}
+.metric .lbl{font-size:12px;color:#2a7a9a;margin-top:4px}
+.metric .sub{font-size:11px;color:#4a9ab8;margin-top:2px}
+.field{flex:1}
+.field label{font-size:12px;color:#1a5f7a;display:block;margin-bottom:4px;font-weight:600}
+.row{display:flex;gap:8px;align-items:flex-end;margin-bottom:8px;flex-wrap:wrap}
+select,input[type=text]{border:0.5px solid #b0d4e8;border-radius:6px;padding:8px 10px;font-family:Arial,sans-serif;font-size:13px;color:#0d4f6b;background:#f0f8fd;width:100%}
+textarea{width:100%;border:0.5px solid #b0d4e8;border-radius:6px;padding:8px 10px;font-family:Arial,sans-serif;font-size:13px;color:#0d4f6b;background:#f0f8fd;resize:vertical;min-height:70px;margin-top:4px}
+button{border:0.5px solid #b0d4e8;border-radius:6px;background:#d0eaf7;color:#0d4f6b;font-family:Arial,sans-serif;font-size:13px;padding:7px 12px;cursor:pointer}
+button:hover{background:#b8ddf0}
+.btn-primary{background:#1a7fa8;color:#fff;border-color:#1a7fa8;font-weight:600}
+.btn-primary:hover{background:#156e93}
+.btn-danger{background:#fee2e2;color:#991b1b;border-color:#fca5a5;padding:5px 9px}
+.btn-edit{background:#fef3c7;color:#92400e;border-color:#fcd34d;padding:5px 9px}
+.btn-save{background:#dcfce7;color:#166534;border-color:#86efac;padding:5px 9px;font-weight:600}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 7px;border-radius:5px}
+.tag-crr{background:#dbeafe;color:#1e40af}
+.tag-nbd{background:#dcfce7;color:#166534}
+.tag-won{background:#dcfce7;color:#166534}
+.tag-lost{background:#fee2e2;color:#991b1b}
+.tag-wip{background:#fef3c7;color:#92400e}
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:left;font-size:11px;font-weight:700;color:#1a5f7a;padding:7px 8px;border-bottom:1px solid #b0d4e8;white-space:nowrap;background:#d0eaf7}
+.tbl td{padding:7px 8px;border-bottom:0.5px solid #cce5f5;vertical-align:middle;color:#0d4f6b}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr.editing{background:#eaf6fd}
+.tbl tr:hover:not(.editing){background:#f5fbff}
+.tbl select,.tbl input[type=text]{padding:3px 5px;font-size:11px;min-width:70px}
+.flex-end{display:flex;justify-content:flex-end;gap:8px;margin-top:1rem}
+.sec-title{font-size:12px;font-weight:700;color:#1a5f7a;text-transform:uppercase;letter-spacing:.06em;margin:1.2rem 0 .6rem}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.bar-wrap{flex:1;background:#d0eaf7;border-radius:4px;height:10px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px}
+.bar-cnt{min-width:20px;text-align:right;color:#2a7a9a;font-size:12px}
+.ai-box{background:#fff;border:0.5px solid #b0d4e8;border-radius:8px;padding:1rem;font-size:13px;line-height:1.8;white-space:pre-wrap;color:#0d4f6b;margin-top:12px}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid #b0d4e8;border-top-color:#1a7fa8;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{font-size:13px;color:#4a9ab8;padding:.75rem 0}
+.period-row{display:flex;gap:8px;align-items:center;margin-bottom:1rem;flex-wrap:wrap}
+.period-row label{font-size:13px;color:#1a5f7a;font-weight:600;white-space:nowrap}
+.period-row select{width:auto;min-width:200px}
 </style>
 
-</head>
-
-<body>
-
-<div class="wrapper">
+<div class="wrap">
 
 <div class="header">
-
-<div class="header-left">
-
-<img src="YOUR_LOGO_BASE64" class="logo">
-
-<div>
-
-<div class="title">
-
-Magnatek Sales MIS Dashboard
-
-</div>
-
-<div class="subtitle">
-
-Professional CRM & Quotation Monitoring System V3
-
-</div>
-
-</div>
-
-</div>
-
-<div class="header-right">
-
-<div class="datetime">
-
-<div id="todayDate"></div>
-
-<div id="liveClock"></div>
-
-</div>
-
-<div class="profile">
-
-MIS
-
-</div>
-
-</div>
-
+  <div class="header-title">Sales MIS Dashboard</div>
+  <img id="logo-img" class="logo" alt="Magnatek — Better things for Better care">
 </div>
 
 <div class="tabs">
+  <button class="tab active" onclick="showTab('entry')">Entries</button>
+  <button class="tab" onclick="showTab('add')">+ Add new</button>
+  <button class="tab" onclick="showTab('dashboard')">Dashboard</button>
+  <button class="tab" onclick="showTab('analyse')">AI Summary</button>
+</div>
 
-<button class="tab-btn active">
+<!-- ENTRIES TAB -->
+<div id="tab-entry">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <span id="entry-count" style="font-size:13px;color:#1a5f7a;font-weight:600"></span>
+    <span style="font-size:12px;color:#4a9ab8">Click ✏️ to edit any row</span>
+  </div>
+  <div class="card" style="padding:0;overflow-x:auto">
+    <table class="tbl">
+      <thead><tr>
+        <th>Month</th><th>Enq#</th><th>Type</th><th>Potential Assigned to</th><th>Product</th><th>Source</th><th>State</th><th>Status</th><th>Reason lost</th><th style="text-align:right">Actions</th>
+      </tr></thead>
+      <tbody id="entries-body"></tbody>
+    </table>
+    <div id="entries-empty" class="empty" style="display:none;padding:1rem">No entries yet. Use "+ Add new" to log your first quotation.</div>
+  </div>
+</div>
 
-Dashboard
-
-</button>
-
-<button class="tab-btn">
-
-Add Entry
-
-</button>
-
-<button class="tab-btn">
-
-Entries
-
-</button>
-
-<button class="tab-btn">
-
-Analytics
-
-</button>
-
-<button class="tab-btn">
-
-AI Summary
-
-</button>
-
-<button class="tab-btn">
-
-Reports
-
-</button>
-
-<button class="tab-btn">
-
-Settings
-
-</button>
-
-</div><!-- ========================= -->
-<!-- DASHBOARD PAGE -->
-<!-- ========================= -->
-
-<div id="dashboardPage" class="page active">
-
-    <div class="grid-4">
-
-        <div class="metric blue">
-            <h2 id="totalQuotation">0</h2>
-            <p>Total Quotations</p>
-        </div>
-
-        <div class="metric green">
-            <h2 id="totalWon">0</h2>
-            <p>Won Quotations</p>
-        </div>
-
-        <div class="metric red">
-            <h2 id="totalLost">0</h2>
-            <p>Lost Quotations</p>
-        </div>
-
-        <div class="metric orange">
-            <h2 id="totalWIP">0</h2>
-            <p>Work In Progress</p>
-        </div>
-
+<!-- ADD TAB -->
+<div id="tab-add" style="display:none">
+  <div class="card">
+    <div style="font-size:14px;font-weight:700;margin-bottom:14px;color:#0d4f6b">Add quotation entry</div>
+    <div class="row">
+      <div class="field"><label>Month</label><select id="f-month">
+        <option>Apr 2026</option><option>May 2026</option><option>Jun 2026</option><option>Jul 2026</option>
+        <option>Aug 2026</option><option>Sep 2026</option><option>Oct 2026</option><option>Nov 2026</option>
+        <option>Dec 2026</option><option>Jan 2027</option><option>Feb 2027</option><option>Mar 2027</option>
+      </select></div>
+      <div class="field"><label>Enquiry No</label><input type="text" id="f-enq" placeholder="e.g. 163"></div>
+      <div class="field"><label>Lead Type</label><select id="f-type">
+        <option value="CRR">CRR (existing)</option>
+        <option value="NBD">NBD (new)</option>
+      </select></div>
     </div>
-
-    <div class="grid-2">
-
-        <div class="card">
-
-            <div class="section-title">
-                Lead Source Analysis
-            </div>
-
-            <div id="leadSourceChart" class="chart-box">
-
-            </div>
-
-        </div>
-
-        <div class="card">
-
-            <div class="section-title">
-                Product Analysis
-            </div>
-
-            <div id="productChart" class="chart-box">
-
-            </div>
-
-        </div>
-
+    <div class="row">
+      <div class="field"><label>Potential Assigned to</label><select id="f-tele">
+        <option>Satish Ingle</option><option>Chetan Daga</option><option>Sanjay Sharma</option><option>Vimal Bhasker</option><option>Other</option>
+      </select></div>
+      <div class="field"><label>Product</label><select id="f-prod">
+        <option>OT Tables</option><option>OT Lights</option><option>Dialysis Chairs</option>
+        <option>Attachments</option><option>Pendants</option><option>Other</option>
+      </select></div>
+      <div class="field"><label>Source</label><select id="f-source">
+        <option>Email</option><option>Referral</option><option>Exhibition</option><option>Website</option>
+        <option>Dealer</option><option>Direct Call</option><option>AIIMS Enquiry</option>
+        <option>Social Media</option><option>TSI Visit</option><option>Whatsapp Enquiry</option>
+      </select></div>
     </div>
-
-    <div class="grid-2">
-
-        <div class="card">
-
-            <div class="section-title">
-                Team Performance
-            </div>
-
-            <div id="teamChart" class="chart-box">
-
-            </div>
-
-        </div>
-
-        <div class="card">
-
-            <div class="section-title">
-                Win vs Loss Ratio
-            </div>
-
-            <div id="statusChart" class="chart-box">
-
-            </div>
-
-        </div>
-
+    <div class="row">
+      <div class="field"><label>State</label><input type="text" id="f-state" placeholder="e.g. Telangana"></div>
+      <div class="field"><label>Status</label><select id="f-status" onchange="toggleLost()">
+        <option value="WIP">WIP</option><option value="Won">Won</option><option value="Lost">Lost</option>
+      </select></div>
+      <div class="field" id="f-reason-wrap" style="display:none">
+        <label>Reason lost <span style="color:#991b1b">*</span></label>
+        <select id="f-reason">
+          <option value="">— select reason —</option>
+          <option>Competition</option>
+          <option>Delayed Project</option>
+          <option>Low Budget</option>
+          <option>Preference for Local/Existing Supplier</option>
+          <option>Technical Specification Misalignment</option>
+          <option>Delivery Concerns</option>
+          <option>Lack of Physical Demo</option>
+          <option>Payment Terms Issues</option>
+          <option>Project Cancellation</option>
+        </select>
+      </div>
     </div>
-
-</div>
-
-<!-- ========================= -->
-<!-- ADD ENTRY PAGE -->
-<!-- ========================= -->
-
-<div id="entryPage" class="page">
-
-<div class="card">
-
-<div class="section-title">
-
-Add New Quotation
-
-</div>
-
-<div class="form-grid">
-
-<div>
-
-<label>Month</label>
-
-<select id="month">
-
-<option>Apr 2026</option>
-<option>May 2026</option>
-<option>Jun 2026</option>
-<option>Jul 2026</option>
-<option>Aug 2026</option>
-<option>Sep 2026</option>
-<option>Oct 2026</option>
-<option>Nov 2026</option>
-<option>Dec 2026</option>
-<option>Jan 2027</option>
-<option>Feb 2027</option>
-<option>Mar 2027</option>
-
-</select>
-
-</div>
-
-<div>
-
-<label>Enquiry Number</label>
-
-<input
-type="text"
-id="enquiry">
-
-</div>
-
-<div>
-
-<label>Lead Type</label>
-
-<select id="leadType">
-
-<option>CRR</option>
-
-<option>NBD</option>
-
-</select>
-
-</div>
-
-<div>
-
-<label>Potential Assigned To</label>
-
-<select id="assigned">
-
-<option>Satish Ingle</option>
-
-<option>Chetan Daga</option>
-
-<option>Sanjay Sharma</option>
-
-<option>Vimal Bhasker</option>
-
-<option>Other</option>
-
-</select>
-
-</div>
-
-<div>
-
-<label>Product</label>
-
-<select id="product">
-
-<option>OT Tables</option>
-
-<option>OT Lights</option>
-
-<option>Dialysis Chairs</option>
-
-<option>Attachments</option>
-
-<option>Pendants</option>
-
-<option>Other</option>
-
-</select>
-
-</div>
-
-<div>
-
-<label>Lead Source</label>
-
-<select id="source">
-
-<option>Email</option>
-
-<option>Website</option>
-
-<option>Referral</option>
-
-<option>Dealer</option>
-
-<option>Social Media</option>
-
-<option>AIIMS Enquiry</option>
-
-<option>Whatsapp Enquiry</option>
-
-<option>TSI Visit</option>
-
-<option>Exhibition</option>
-
-<option>Direct Call</option>
-
-</select>
-
-</div>
-
-<div>
-
-<label>State</label>
-
-<input
-type="text"
-id="state">
-
-</div>
-
-<div>
-
-<label>Status</label>
-
-<select id="status">
-
-<option>WIP</option>
-
-<option>Won</option>
-
-<option>Lost</option>
-
-</select>
-
-</div>
-
-<div>
-
-<label>Reason Lost</label>
-
-<select id="reasonLost">
-
-<option value="">
-
-Select
-
-</option>
-
-<option>
-
-Competition
-
-</option>
-
-<option>
-
-Budget Issue
-
-</option>
-
-<option>
-
-Project Cancelled
-
-</option>
-
-<option>
-
-Delivery Issue
-
-</option>
-
-<option>
-
-Existing Vendor
-
-</option>
-
-<option>
-
-Technical Specification
-
-</option>
-
-<option>
-
-Payment Terms
-
-</option>
-
-<option>
-
-Others
-
-</option>
-
-</select>
-
-</div>
-
-</div>
-
-<br>
-
-<label>
-
-Customer Remarks
-
-</label>
-
-<textarea
-id="remarks"
-rows="5">
-
-</textarea>
-
-<br><br>
-
-<button
-class="primary-btn"
-id="saveEntry">
-
-Save Entry
-
-</button>
-
-<button
-class="success-btn"
-id="clearForm">
-
-Clear
-
-</button>
-
-</div>
-
-</div>
-
-<!-- ========================= -->
-<!-- SEARCH & FILTER PAGE -->
-<!-- ========================= -->
-
-<div id="entriesPage" class="page">
-
-<div class="card">
-
-<div class="section-title">
-
-Search Quotations
-
-</div>
-
-<div class="form-grid">
-
-<div>
-
-<label>
-
-Search
-
-</label>
-
-<input
-type="text"
-id="searchBox"
-placeholder="Enquiry / Product / State">
-
-</div>
-
-<div>
-
-<label>
-
-Filter Month
-
-</label>
-
-<select id="filterMonth">
-
-<option>
-
-All
-
-</option>
-
-<option>Apr 2026</option>
-<option>May 2026</option>
-<option>Jun 2026</option>
-<option>Jul 2026</option>
-<option>Aug 2026</option>
-<option>Sep 2026</option>
-<option>Oct 2026</option>
-<option>Nov 2026</option>
-<option>Dec 2026</option>
-<option>Jan 2027</option>
-<option>Feb 2027</option>
-<option>Mar 2027</option>
-
-</select>
-
-</div>
-
-<div>
-
-<label>
-
-Status
-
-</label>
-
-<select id="filterStatus">
-
-<option>All</option>
-
-<option>Won</option>
-
-<option>Lost</option>
-
-<option>WIP</option>
-
-</select>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<div class="table-responsive">
-
-<table id="quotationTable">
-
-<thead>
-
-<tr>
-
-<th>Month</th>
-
-<th>Enquiry</th>
-
-<th>Lead</th>
-
-<th>Assigned</th>
-
-<th>Product</th>
-
-<th>Source</th>
-
-<th>State</th>
-
-<th>Status</th>
-
-<th>Actions</th>
-
-</tr>
-
-</thead>
-
-<tbody id="tableBody">
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-</div><!-- ========================================= -->
-<!-- ANALYTICS PAGE -->
-<!-- ========================================= -->
-
-<div id="analyticsPage" class="page">
-
-    <div class="grid-2">
-
-        <div class="card">
-
-            <div class="section-title">
-                Monthly Quotation Trend
-            </div>
-
-            <canvas id="monthlyChart" height="300"></canvas>
-
-        </div>
-
-        <div class="card">
-
-            <div class="section-title">
-                Product Wise Performance
-            </div>
-
-            <canvas id="productWiseChart" height="300"></canvas>
-
-        </div>
-
+    <div id="f-notes-wrap" style="display:none;margin-bottom:8px">
+      <label style="font-size:12px;color:#1a5f7a;font-weight:600">Notes (what did the customer say?)</label>
+      <textarea id="f-notes" placeholder="Key objection, competitor named, price gap, specific concern..."></textarea>
     </div>
-
-    <div class="grid-2">
-
-        <div class="card">
-
-            <div class="section-title">
-                Lead Source Performance
-            </div>
-
-            <canvas id="sourceChart" height="300"></canvas>
-
-        </div>
-
-        <div class="card">
-
-            <div class="section-title">
-                Team Performance
-            </div>
-
-            <canvas id="teamPerformanceChart" height="300"></canvas>
-
-        </div>
-
+    <div class="flex-end">
+      <button class="btn-primary" onclick="addEntry()">+ Add entry</button>
     </div>
-
+  </div>
 </div>
 
-<!-- ========================================= -->
-<!-- AI SUMMARY PAGE -->
-<!-- ========================================= -->
-
-<div id="aiPage" class="page">
-
-<div class="card">
-
-<div class="section-title">
-
-AI Sales Summary
-
+<!-- DASHBOARD TAB -->
+<div id="tab-dashboard" style="display:none">
+  <div class="period-row">
+    <label>Period:</label>
+    <select id="dash-period" onchange="renderDashboard()">
+      <optgroup label="— Full Year —">
+        <option value="FY2026-27">FY 2026-27 (Apr 2026 – Mar 2027)</option>
+      </optgroup>
+      <optgroup label="— Quarter —">
+        <option value="Q1">Q1: Apr – Jun 2026</option>
+        <option value="Q2">Q2: Jul – Sep 2026</option>
+        <option value="Q3">Q3: Oct – Dec 2026</option>
+        <option value="Q4">Q4: Jan – Mar 2027</option>
+      </optgroup>
+      <optgroup label="— Half Year —">
+        <option value="H1">H1: Apr – Sep 2026</option>
+        <option value="H2">H2: Oct 2026 – Mar 2027</option>
+      </optgroup>
+      <optgroup label="— Individual Month —">
+        <option value="Apr 2026">Apr 2026</option><option value="May 2026">May 2026</option>
+        <option value="Jun 2026">Jun 2026</option><option value="Jul 2026">Jul 2026</option>
+        <option value="Aug 2026">Aug 2026</option><option value="Sep 2026">Sep 2026</option>
+        <option value="Oct 2026">Oct 2026</option><option value="Nov 2026">Nov 2026</option>
+        <option value="Dec 2026">Dec 2026</option><option value="Jan 2027">Jan 2027</option>
+        <option value="Feb 2027">Feb 2027</option><option value="Mar 2027">Mar 2027</option>
+      </optgroup>
+    </select>
+  </div>
+  <div id="dash-content"></div>
 </div>
 
-<p style="margin-bottom:15px;color:#666;line-height:24px">
-
-Generate a management summary based on quotation performance,
-win ratio, lead source, products, reasons for loss and team
-performance.
-
-</p>
-
-<div style="display:flex;gap:15px;flex-wrap:wrap">
-
-<button
-class="primary-btn"
-id="generateAI">
-
-Generate AI Summary
-
-</button>
-
-<button
-class="success-btn"
-id="copySummary">
-
-Copy Summary
-
-</button>
-
-<button
-class="danger-btn"
-id="clearSummary">
-
-Clear
-
-</button>
-
+<!-- AI SUMMARY TAB -->
+<div id="tab-analyse" style="display:none">
+  <div class="card">
+    <div style="font-size:14px;font-weight:700;margin-bottom:8px;color:#0d4f6b">AI Summary</div>
+    <div style="font-size:13px;color:#2a7a9a;margin-bottom:12px">Generates a management-level summary of win/loss patterns, source analysis, reasons lost, and team performance.</div>
+    <div class="period-row">
+      <label>Period:</label>
+      <select id="ai-period" style="min-width:200px">
+        <option value="FY2026-27">FY 2026-27 (Full Year)</option>
+        <option value="Q1">Q1: Apr – Jun 2026</option><option value="Q2">Q2: Jul – Sep 2026</option>
+        <option value="Q3">Q3: Oct – Dec 2026</option><option value="Q4">Q4: Jan – Mar 2027</option>
+        <option value="H1">H1: Apr – Sep 2026</option><option value="H2">H2: Oct – Mar 2027</option>
+        <option value="Apr 2026">Apr 2026</option><option value="May 2026">May 2026</option>
+        <option value="Jun 2026">Jun 2026</option><option value="Jul 2026">Jul 2026</option>
+        <option value="Aug 2026">Aug 2026</option><option value="Sep 2026">Sep 2026</option>
+        <option value="Oct 2026">Oct 2026</option><option value="Nov 2026">Nov 2026</option>
+        <option value="Dec 2026">Dec 2026</option><option value="Jan 2027">Jan 2027</option>
+        <option value="Feb 2027">Feb 2027</option><option value="Mar 2027">Mar 2027</option>
+      </select>
+    </div>
+    <div class="flex-end">
+      <button class="btn-primary" onclick="runAnalysis()">▶ Generate AI Summary</button>
+    </div>
+  </div>
+  <div id="ai-output" style="display:none" class="ai-box"></div>
+</div>
 </div>
 
-<br>
-
-<div
-id="aiResult"
-style="
-min-height:320px;
-background:#F9FBFD;
-border:1px solid #D6E5F2;
-padding:20px;
-border-radius:10px;
-white-space:pre-wrap;
-line-height:28px;
-font-size:14px;
-">
-
-Click "Generate AI Summary"
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ========================================= -->
-<!-- REPORT PAGE -->
-<!-- ========================================= -->
-
-<div id="reportPage" class="page">
-
-<div class="card">
-
-<div class="section-title">
-
-Reports
-
-</div>
-
-<div class="grid-4">
-
-<button class="primary-btn" id="excelExport">
-
-Export Excel
-
-</button>
-
-<button class="success-btn" id="csvExport">
-
-Export CSV
-
-</button>
-
-<button class="primary-btn" id="pdfExport">
-
-Export PDF
-
-</button>
-
-<button class="danger-btn" id="printReport">
-
-Print Report
-
-</button>
-
-</div>
-
-<br>
-
-<div class="grid-2">
-
-<div class="card">
-
-<h3>
-
-Quick Statistics
-
-</h3>
-
-<table>
-
-<tr>
-
-<td>Total Quotations</td>
-
-<td id="repTotal">
-
-0
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>Won</td>
-
-<td id="repWon">
-
-0
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>Lost</td>
-
-<td id="repLost">
-
-0
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>WIP</td>
-
-<td id="repWIP">
-
-0
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>Win %</td>
-
-<td id="repWinRate">
-
-0%
-
-</td>
-
-</tr>
-
-</table>
-
-</div>
-
-<div class="card">
-
-<h3>
-
-Top Performing Executive
-
-</h3>
-
-<div
-id="topExecutive"
-style="
-font-size:28px;
-font-weight:bold;
-margin-top:20px;
-color:#0D6EFD;
-">
-
---
-
-</div>
-
-<br>
-
-<h3>
-
-Top Lead Source
-
-</h3>
-
-<div
-id="topSource"
-style="
-font-size:22px;
-font-weight:bold;
-margin-top:10px;
-color:#43A047;
-">
-
---
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ========================================= -->
-<!-- SETTINGS PAGE -->
-<!-- ========================================= -->
-
-<div id="settingsPage" class="page">
-
-<div class="card">
-
-<div class="section-title">
-
-Application Settings
-
-</div>
-
-<div class="form-grid">
-
-<div>
-
-<label>
-
-Google Apps Script URL
-
-</label>
-
-<input
-type="text"
-id="scriptURL">
-
-</div>
-
-<div>
-
-<label>
-
-Company Name
-
-</label>
-
-<input
-type="text"
-id="companyName"
-value="Magnatek">
-
-</div>
-
-<div>
-
-<label>
-
-Financial Year
-
-</label>
-
-<input
-type="text"
-value="2026-27">
-
-</div>
-
-</div>
-
-<br>
-
-<button
-class="primary-btn"
-id="saveSettings">
-
-Save Settings
-
-</button>
-
-</div>
-
-<div class="card">
-
-<div class="section-title">
-
-Database
-
-</div>
-
-<div
-style="
-display:flex;
-gap:15px;
-flex-wrap:wrap;
-">
-
-<button class="success-btn">
-
-Backup Data
-
-</button>
-
-<button class="primary-btn">
-
-Restore Data
-
-</button>
-
-<button class="danger-btn">
-
-Delete All Data
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ========================================= -->
-<!-- LOADING -->
-<!-- ========================================= -->
-
-<div
-id="loadingScreen"
-style="
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(255,255,255,.9);
-z-index:99999;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-">
-
-<div
-style="
-width:70px;
-height:70px;
-border:8px solid #E3F2FD;
-border-top:8px solid #0D6EFD;
-border-radius:50%;
-animation:spin 1s linear infinite;
-">
-
-</div>
-
-<p
-style="
-margin-top:20px;
-font-size:18px;
-font-weight:600;
-">
-
-Loading...
-
-</p>
-
-</div>
-
-<style>
-
-@keyframes spin{
-
-0%{
-transform:rotate(0deg);
-}
-
-100%{
-transform:rotate(360deg);
-}
-
-}
-
-</style>
-
-<footer class="footer">
-
-© 2026 Magnatek Enterprises Pvt Ltd
-
-<br>
-
-Sales MIS Dashboard V3 Professional Edition
-
-</footer>
-
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/">********************************************************************
- * Magnatek Sales MIS Dashboard V3
- * PART 2A
- ********************************************************************/
-
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzWKkenhXdurcQnsSGaE7M5_Gl84y_oOuOhnJ16SFfSRzRPyzidmaDg7Mvfbu3H_Nm5/exec";
-
-let quotationData = [];
-let filteredData = [];
-let editRowId = null;
-
-const MONTHS = [
-"Apr 2026","May 2026","Jun 2026","Jul 2026",
-"Aug 2026","Sep 2026","Oct 2026","Nov 2026",
-"Dec 2026","Jan 2027","Feb 2027","Mar 2027"
-];
-
-const TEAM = [
-"Satish Ingle",
-"Chetan Daga",
-"Sanjay Sharma",
-"Vimal Bhasker",
-"Other"
-];
-
-const PRODUCTS = [
-"OT Tables",
-"OT Lights",
-"Dialysis Chairs",
-"Attachments",
-"Pendants",
-"Other"
-];
-
-const SOURCES = [
-"Email",
-"Website",
-"Referral",
-"Dealer",
-"Social Media",
-"AIIMS Enquiry",
-"Whatsapp Enquiry",
-"TSI Visit",
-"Exhibition",
-"Direct Call"
-];
-
-const LOSS_REASONS = [
-"Competition",
-"Budget Issue",
-"Project Cancelled",
-"Delivery Issue",
-"Existing Vendor",
-"Technical Specification",
-"Payment Terms",
-"Others"
-];
-
-/*********************************************************
- INITIALIZE
-*********************************************************/
-
-window.onload=function(){
-
-loadLocalData();
-
-initializeClock();
-
-bindButtons();
-
-showPage("dashboardPage");
-
-renderTable();
-
-updateDashboard();
-
+<script>
+// ── Embed logo as base64 directly in JS so it always loads ──
+(function(){
+  var b64 = "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";
+  document.getElementById('logo-img').src = "data:image/jpeg;base64," + b64;
+})();
+
+const ALL_MONTHS=['Apr 2026','May 2026','Jun 2026','Jul 2026','Aug 2026','Sep 2026','Oct 2026','Nov 2026','Dec 2026','Jan 2027','Feb 2027','Mar 2027'];
+const PERIOD_MAP={
+  'FY2026-27':ALL_MONTHS,
+  'Q1':['Apr 2026','May 2026','Jun 2026'],
+  'Q2':['Jul 2026','Aug 2026','Sep 2026'],
+  'Q3':['Oct 2026','Nov 2026','Dec 2026'],
+  'Q4':['Jan 2027','Feb 2027','Mar 2027'],
+  'H1':['Apr 2026','May 2026','Jun 2026','Jul 2026','Aug 2026','Sep 2026'],
+  'H2':['Oct 2026','Nov 2026','Dec 2026','Jan 2027','Feb 2027','Mar 2027']
 };
+const ASSIGNED=['Satish Ingle','Chetan Daga','Sanjay Sharma','Vimal Bhasker','Other'];
+const PRODS=['OT Tables','OT Lights','Dialysis Chairs','Attachments','Pendants','Other'];
+const SOURCES=['Email','Referral','Exhibition','Website','Dealer','Direct Call','AIIMS Enquiry','Social Media','TSI Visit','Whatsapp Enquiry'];
+const REASONS=['Competition','Delayed Project','Low Budget','Preference for Local/Existing Supplier','Technical Specification Misalignment','Delivery Concerns','Lack of Physical Demo','Payment Terms Issues','Project Cancellation'];
+const TYPES=['CRR','NBD'];
 
-/*********************************************************
- CLOCK
-*********************************************************/
-
-function initializeClock(){
-
-setInterval(function(){
-
-const now=new Date();
-
-document.getElementById("todayDate").innerHTML=
-now.toLocaleDateString();
-
-document.getElementById("liveClock").innerHTML=
-now.toLocaleTimeString();
-
-},1000);
-
-}
-
-/*********************************************************
- PAGE NAVIGATION
-*********************************************************/
-
-function showPage(pageId){
-
-document.querySelectorAll(".page").forEach(function(page){
-
-page.classList.remove("active");
-
-});
-
-document.getElementById(pageId).classList.add("active");
-
-document.querySelectorAll(".tab-btn").forEach(function(btn){
-
-btn.classList.remove("active");
-
-});
-
-switch(pageId){
-
-case "dashboardPage":
-document.querySelectorAll(".tab-btn")[0].classList.add("active");
-break;
-
-case "entryPage":
-document.querySelectorAll(".tab-btn")[1].classList.add("active");
-break;
-
-case "entriesPage":
-document.querySelectorAll(".tab-btn")[2].classList.add("active");
-break;
-
-case "analyticsPage":
-document.querySelectorAll(".tab-btn")[3].classList.add("active");
-break;
-
-case "aiPage":
-document.querySelectorAll(".tab-btn")[4].classList.add("active");
-break;
-
-case "reportPage":
-document.querySelectorAll(".tab-btn")[5].classList.add("active");
-break;
-
-case "settingsPage":
-document.querySelectorAll(".tab-btn")[6].classList.add("active");
-break;
-
-}
-
-}
-
-/*********************************************************
- TAB EVENTS
-*********************************************************/
-
-function bindButtons(){
-
-document.querySelectorAll(".tab-btn")[0].onclick=function(){
-
-showPage("dashboardPage");
-
-};
-
-document.querySelectorAll(".tab-btn")[1].onclick=function(){
-
-showPage("entryPage");
-
-};
-
-document.querySelectorAll(".tab-btn")[2].onclick=function(){
-
-showPage("entriesPage");
-
-};
-
-document.querySelectorAll(".tab-btn")[3].onclick=function(){
-
-showPage("analyticsPage");
-
-};
-
-document.querySelectorAll(".tab-btn")[4].onclick=function(){
-
-showPage("aiPage");
-
-};
-
-document.querySelectorAll(".tab-btn")[5].onclick=function(){
-
-showPage("reportPage");
-
-};
-
-document.querySelectorAll(".tab-btn")[6].onclick=function(){
-
-showPage("settingsPage");
-
-};
-
-document.getElementById("saveEntry").onclick=saveQuotation;
-
-document.getElementById("clearForm").onclick=clearForm;
-
-document.getElementById("searchBox").onkeyup=searchQuotation;
-
-document.getElementById("filterMonth").onchange=searchQuotation;
-
-document.getElementById("filterStatus").onchange=searchQuotation;
-
-}
-
-/*********************************************************
- LOCAL STORAGE
-*********************************************************/
-
-function loadLocalData(){
-
+let entries=[];
 try{
+  let raw=JSON.parse(localStorage.getItem('fms_v2')||localStorage.getItem('fms_entries')||'[]');
+  entries=raw.map(e=>({...e,type:e.type==='CRN'?'CRR':e.type,source:e.source||''}));
+}catch(e){}
+let editingId=null;
 
-quotationData=
-JSON.parse(localStorage.getItem("MagnatekMIS"))||[];
+function save(){ try{ localStorage.setItem('fms_v2',JSON.stringify(entries)); }catch(e){} }
+function getMonths(p){ return PERIOD_MAP[p]||[p]; }
+function filterByPeriod(p){ const m=getMonths(p); return entries.filter(e=>m.includes(e.month)); }
 
-}catch(e){
-
-quotationData=[];
-
+function showTab(t){
+  ['entry','add','dashboard','analyse'].forEach(x=>{ document.getElementById('tab-'+x).style.display=x===t?'':'none'; });
+  document.querySelectorAll('.tab').forEach((b,i)=>{ b.classList.toggle('active',['entry','add','dashboard','analyse'][i]===t); });
+  if(t==='dashboard') renderDashboard();
+  if(t==='entry') renderTable();
 }
 
-filteredData=[...quotationData];
-
+function toggleLost(){
+  const v=document.getElementById('f-status').value;
+  document.getElementById('f-reason-wrap').style.display=v==='Lost'?'':'none';
+  document.getElementById('f-notes-wrap').style.display=v==='Lost'?'':'none';
 }
 
-function saveLocalData(){
-
-localStorage.setItem(
-
-"MagnatekMIS",
-
-JSON.stringify(quotationData)
-
-);
-
+function tagHTML(val){
+  const map={CRR:'tag-crr',NBD:'tag-nbd',Won:'tag-won',Lost:'tag-lost',WIP:'tag-wip'};
+  return `<span class="tag ${map[val]||'tag-wip'}">${val}</span>`;
 }
 
-/*********************************************************
- SAVE ENTRY
-*********************************************************/
-
-function saveQuotation(){
-
-const obj={
-
-id:Date.now(),
-
-month:document.getElementById("month").value,
-
-enquiry:document.getElementById("enquiry").value,
-
-lead:document.getElementById("leadType").value,
-
-assigned:document.getElementById("assigned").value,
-
-product:document.getElementById("product").value,
-
-source:document.getElementById("source").value,
-
-state:document.getElementById("state").value,
-
-status:document.getElementById("status").value,
-
-reason:document.getElementById("reasonLost").value,
-
-remarks:document.getElementById("remarks").value
-
-};
-
-quotationData.push(obj);
-
-filteredData=[...quotationData];
-
-saveLocalData();
-
-clearForm();
-
-renderTable();
-
-updateDashboard();
-
-alert("Quotation Saved Successfully");
-
+function mkSel(id,opts,val){
+  return `<select id="${id}">${opts.map(o=>`<option${o===val?' selected':''}>${o}</option>`).join('')}</select>`;
 }
 
-/*********************************************************
- CLEAR FORM
-*********************************************************/
+function renderTable(){
+  const tbody=document.getElementById('entries-body');
+  const empty=document.getElementById('entries-empty');
+  const cnt=document.getElementById('entry-count');
+  cnt.textContent=entries.length+' entr'+(entries.length===1?'y':'ies');
+  if(!entries.length){ tbody.innerHTML=''; empty.style.display=''; return; }
+  empty.style.display='none';
+  tbody.innerHTML=entries.slice().reverse().map(e=>{
+    if(editingId===e.id){
+      return `<tr class="editing">
+        <td>${mkSel('e-month',ALL_MONTHS,e.month)}</td>
+        <td><input type="text" id="e-enq" value="${e.enq}" style="width:50px"></td>
+        <td>${mkSel('e-type',TYPES,e.type)}</td>
+        <td>${mkSel('e-tele',ASSIGNED,e.tele)}</td>
+        <td>${mkSel('e-prod',PRODS,e.prod)}</td>
+        <td>${mkSel('e-source',SOURCES,e.source)}</td>
+        <td><input type="text" id="e-state" value="${e.state}" style="width:75px"></td>
+        <td>${mkSel('e-status',['WIP','Won','Lost'],e.status)}</td>
+        <td>${mkSel('e-reason',[''].concat(REASONS),e.reason)}</td>
+        <td style="text-align:right;white-space:nowrap">
+          <button class="btn-save" onclick="saveEdit(${e.id})">✓ Save</button>
+          <button onclick="cancelEdit()" style="margin-left:4px">✕</button>
+        </td>
+      </tr>`;
+    }
+    return `<tr>
+      <td style="color:#4a9ab8;white-space:nowrap;font-size:11px">${e.month}</td>
+      <td style="font-weight:700">#${e.enq}</td>
+      <td>${tagHTML(e.type)}</td>
+      <td style="white-space:nowrap">${e.tele}</td>
+      <td>${e.prod}</td>
+      <td style="font-size:11px;color:#1a5f7a">${e.source||'—'}</td>
+      <td>${e.state}</td>
+      <td>${tagHTML(e.status)}</td>
+      <td style="font-size:11px;color:#991b1b;max-width:150px">${e.reason||'—'}</td>
+      <td style="text-align:right;white-space:nowrap">
+        <button class="btn-edit" onclick="startEdit(${e.id})">✏️</button>
+        <button class="btn-danger" onclick="deleteEntry(${e.id})" style="margin-left:4px">🗑</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
 
-function clearForm(){
+function startEdit(id){ editingId=id; renderTable(); }
+function cancelEdit(){ editingId=null; renderTable(); }
 
-document.getElementById("enquiry").value="";
+function saveEdit(id){
+  const idx=entries.findIndex(e=>e.id===id);
+  if(idx===-1) return;
+  entries[idx]={...entries[idx],
+    month:document.getElementById('e-month').value,
+    enq:document.getElementById('e-enq').value,
+    type:document.getElementById('e-type').value,
+    tele:document.getElementById('e-tele').value,
+    prod:document.getElementById('e-prod').value,
+    source:document.getElementById('e-source').value,
+    state:document.getElementById('e-state').value,
+    status:document.getElementById('e-status').value,
+    reason:document.getElementById('e-reason').value
+  };
+  editingId=null; save(); renderTable();
+}
 
-document.getElementById("state").value="";
+function deleteEntry(id){
+  if(!confirm('Delete this entry?')) return;
+  entries=entries.filter(e=>e.id!==id);
+  save(); renderTable();
+}
 
-document.getElementById("remarks").value="";
+function addEntry(){
+  const status=document.getElementById('f-status').value;
+  if(status==='Lost'&&!document.getElementById('f-reason').value){ alert('Reason for losing is mandatory!'); return; }
+  entries.push({
+    id:Date.now(),
+    month:document.getElementById('f-month').value,
+    enq:document.getElementById('f-enq').value||'—',
+    type:document.getElementById('f-type').value,
+    tele:document.getElementById('f-tele').value,
+    prod:document.getElementById('f-prod').value,
+    source:document.getElementById('f-source').value,
+    state:document.getElementById('f-state').value||'—',
+    status,
+    reason:status==='Lost'?document.getElementById('f-reason').value:'',
+    notes:status==='Lost'?document.getElementById('f-notes').value:''
+  });
+  save();
+  ['f-enq','f-state','f-notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-reason').value='';
+  document.getElementById('f-status').value='WIP';
+  toggleLost();
+  showTab('entry');
+}
 
-document.getElementById("reasonLost").selectedIndex=0;
+function renderDashboard(){
+  const period=document.getElementById('dash-period').value;
+  const data=filterByPeriod(period);
+  const el=document.getElementById('dash-content');
+  if(!data.length){ el.innerHTML='<p class="empty">No data for this period. Add entries first.</p>'; return; }
+  const total=data.length,won=data.filter(e=>e.status==='Won').length,lost=data.filter(e=>e.status==='Lost').length,
+    wip=data.filter(e=>e.status==='WIP').length,crr=data.filter(e=>e.type==='CRR').length,nbd=data.filter(e=>e.type==='NBD').length;
+  const count=(arr,key)=>{ const r={}; arr.forEach(e=>{ if(e[key]) r[e[key]]=(r[e[key]]||0)+1; }); return r; };
+  const reasonCounts=count(data.filter(e=>e.status==='Lost'),'reason');
+  const sourceCounts=count(data,'source');
+  const prodCounts=count(data,'prod');
+  const assignedCounts={};
+  data.forEach(e=>{ if(!assignedCounts[e.tele]) assignedCounts[e.tele]={Won:0,Lost:0,WIP:0,total:0}; assignedCounts[e.tele][e.status]++; assignedCounts[e.tele].total++; });
+  const maxR=Math.max(...Object.values(reasonCounts),1);
+  const maxS=Math.max(...Object.values(sourceCounts),1);
+  const maxP=Math.max(...Object.values(prodCounts),1);
+  el.innerHTML=`
+    <div class="grid4">
+      <div class="metric"><div class="val">${total}</div><div class="lbl">Total Quotations</div></div>
+      <div class="metric"><div class="val" style="color:#166534">${won}</div><div class="lbl">Won</div><div class="sub">${Math.round(won/total*100)}% win rate</div></div>
+      <div class="metric"><div class="val" style="color:#991b1b">${lost}</div><div class="lbl">Lost</div><div class="sub">${Math.round(lost/total*100)}% loss rate</div></div>
+      <div class="metric"><div class="val" style="color:#92400e">${wip}</div><div class="lbl">WIP / Open</div></div>
+    </div>
+    <div class="grid2">
+      <div class="metric"><div class="val">${crr}</div><div class="lbl">CRR (Existing)</div><div class="sub">${Math.round(crr/total*100)}% of total</div></div>
+      <div class="metric"><div class="val">${nbd}</div><div class="lbl">NBD (New)</div><div class="sub">${Math.round(nbd/total*100)}% of total</div></div>
+    </div>
+    <div class="sec-title">Lead source analysis</div>
+    <div class="card">${Object.entries(sourceCounts).sort((a,b)=>b[1]-a[1]).map(([s,c])=>`
+      <div class="bar-row"><span style="min-width:160px;font-size:12px">${s}</span>
+      <div class="bar-wrap"><div class="bar-fill" style="width:${Math.round(c/maxS*100)}%;background:#1a7fa8"></div></div>
+      <span class="bar-cnt">${c}</span></div>`).join('')}</div>
+    ${Object.keys(reasonCounts).length?`
+    <div class="sec-title">Reasons for losing</div>
+    <div class="card">${Object.entries(reasonCounts).sort((a,b)=>b[1]-a[1]).map(([r,c])=>`
+      <div class="bar-row"><span style="min-width:230px;font-size:12px">${r}</span>
+      <div class="bar-wrap"><div class="bar-fill" style="width:${Math.round(c/maxR*100)}%;background:#ef4444"></div></div>
+      <span class="bar-cnt">${c}</span></div>`).join('')}</div>`:''}
+    <div class="sec-title">Potential Assigned to — performance</div>
+    <div class="card">${Object.entries(assignedCounts).map(([n,s])=>`
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:0.5px solid #cce5f5;flex-wrap:wrap">
+        <span style="flex:1;font-size:13px;font-weight:700;min-width:130px">${n}</span>
+        <span style="font-size:12px;color:#2a7a9a">${s.total} total</span>
+        <span class="tag tag-won">${s.Won} won</span>
+        <span class="tag tag-lost">${s.Lost} lost</span>
+        <span class="tag tag-wip">${s.WIP} WIP</span>
+      </div>`).join('')}</div>
+    <div class="sec-title">By product</div>
+    <div class="card">${Object.entries(prodCounts).sort((a,b)=>b[1]-a[1]).map(([p,c])=>`
+      <div class="bar-row"><span style="min-width:160px;font-size:12px">${p}</span>
+      <div class="bar-wrap"><div class="bar-fill" style="width:${Math.round(c/maxP*100)}%;background:#0d9488"></div></div>
+      <span class="bar-cnt">${c}</span></div>`).join('')}</div>`;
+}
 
-document.getElementById("status").selectedIndex=0;
-
-}function runAnalysis(){
+async function runAnalysis(){
   const period=document.getElementById('ai-period').value;
   const data=filterByPeriod(period);
   const el=document.getElementById('ai-output');
-
   el.style.display='block';
-
-  if(!data.length){
-    el.innerHTML='No data available for the selected period.';
-    return;
-  }
-
-  el.innerHTML='<span class="spinner"></span> Generating AI Summary...';
-
-  const total=data.length;
-  const won=data.filter(e=>e.status==='Won').length;
-  const lost=data.filter(e=>e.status==='Lost').length;
-  const wip=data.filter(e=>e.status==='WIP').length;
-  const crr=data.filter(e=>e.type==='CRR').length;
-  const nbd=data.filter(e=>e.type==='NBD').length;
-
-  const sourceCount={};
-  const productCount={};
-  const reasonCount={};
-  const personCount={};
-
-  data.forEach(e=>{
-      sourceCount[e.source]=(sourceCount[e.source]||0)+1;
-      productCount[e.prod]=(productCount[e.prod]||0)+1;
-
-      if(e.reason)
-          reasonCount[e.reason]=(reasonCount[e.reason]||0)+1;
-
-      if(!personCount[e.tele])
-          personCount[e.tele]={Won:0,Lost:0,WIP:0};
-
-      personCount[e.tele][e.status]++;
-  });
-
-  const topSources=Object.entries(sourceCount)
-      .sort((a,b)=>b[1]-a[1])
-      .map(x=>`${x[0]} (${x[1]})`)
-      .join(", ");
-
-  const topProducts=Object.entries(productCount)
-      .sort((a,b)=>b[1]-a[1])
-      .map(x=>`${x[0]} (${x[1]})`)
-      .join(", ");
-
-  const topReasons=Object.entries(reasonCount)
-      .sort((a,b)=>b[1]-a[1])
-      .map(x=>`${x[0]} (${x[1]})`)
-      .join(", ");
-
-  let teamSummary="";
-
-  Object.keys(personCount).forEach(name=>{
-      const p=personCount[name];
-      teamSummary+=`${name} - Won:${p.Won}, Lost:${p.Lost}, WIP:${p.WIP}\n`;
-  });
-
-  const prompt=`
-You are a Sales MIS expert.
-
-Prepare a professional management summary.
-
-Period : ${period}
-
-Total Quotations : ${total}
-Won : ${won}
-Lost : ${lost}
-WIP : ${wip}
-
-CRR : ${crr}
-NBD : ${nbd}
-
-Top Sources
-${topSources}
-
-Top Products
-${topProducts}
-
-Reasons Lost
-${topReasons}
-
-Team Performance
-${teamSummary}
-
-Provide:
-
-1. Overall pipeline health.
-2. Win rate analysis.
-3. CRR vs NBD analysis.
-4. Best lead sources.
-5. Best selling products.
-6. Loss analysis.
-7. Team performance.
-8. Recommended action plan.
-9. Management conclusion.
-
-Keep it under 400 words.
-`;
-
+  if(!data.length){ el.innerHTML='No data for this period. Please add entries first.'; return; }
+  el.innerHTML='<span class="spinner"></span> Generating summary...';
+  const won=data.filter(e=>e.status==='Won').length,lost=data.filter(e=>e.status==='Lost').length,
+    wip=data.filter(e=>e.status==='WIP').length,crr=data.filter(e=>e.type==='CRR').length,nbd=data.filter(e=>e.type==='NBD').length;
+  const srcMap={}; data.forEach(e=>{ srcMap[e.source]=(srcMap[e.source]||0)+1; });
+  const topSrc=Object.entries(srcMap).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`${k}(${v})`).join(', ');
+  const lostDetails=data.filter(e=>e.status==='Lost').map(e=>`Enq#${e.enq}: ${e.prod} | ${e.tele} | Source:${e.source} | Reason:${e.reason}`).join('\n');
+  const prompt=`You are a senior sales analyst for Magnatek, a medical equipment company in India. Analyse this Sales MIS data for "${period}" and write a concise management summary.\n\nTotal: ${data.length} | Won: ${won} | Lost: ${lost} | WIP: ${wip} | CRR: ${crr} | NBD: ${nbd}\nLead sources: ${topSrc}\nLost details:\n${lostDetails||'None'}\nAll: ${data.map(e=>`#${e.enq}:${e.type}|${e.tele}|${e.prod}|${e.source}|${e.state}|${e.status}`).join(' / ')}\n\nCover: 1)Pipeline health 2)CRR vs NBD split 3)Top lead sources 4)Reasons lost + corrective actions 5)Team performance 6)Next period recommendations. Plain text, under 400 words, direct and actionable.`;
   try{
-
-      const response=await fetch("https://api.anthropic.com/v1/messages",{
-
-          method:"POST",
-
-          headers:{
-              "Content-Type":"application/json",
-              "anthropic-dangerous-direct-browser-access":"true"
-          },
-
-          body:JSON.stringify({
-
-              model:"claude-sonnet-4-20250514",
-
-              max_tokens:1000,
-
-              messages:[
-                  {
-                      role:"user",
-                      content:prompt
-                  }
-              ]
-
-          })
-
-      });
-
-      if(!response.ok){
-
-          const txt=await response.text();
-
-          el.innerHTML="API Error : "+txt;
-
-          return;
-      }
-
-      const result=await response.json();
-
-      el.innerHTML=result.content
-          .filter(x=>x.type==="text")
-          .map(x=>x.text)
-          .join("");
-
-  }
-  catch(err){
-
-      el.innerHTML="Connection Error : "+err.message;
-
-  }
-
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1024,messages:[{role:'user',content:prompt}]})
+    });
+    if(!res.ok){ const t=await res.text(); el.innerHTML='Error ('+res.status+'): '+t; return; }
+    const d=await res.json();
+    el.innerHTML=d.content?.filter(x=>x.type==='text').map(x=>x.text).join('')||'No response.';
+  }catch(err){ el.innerHTML='Connection error: '+err.message; }
 }
-
-async function loadData(){
-
-    try{
-
-        const response=await fetch(WEB_APP_URL);
-
-        entries=await response.json();
-
-        if(!Array.isArray(entries))
-            entries=[];
-
-        localStorage.setItem(
-            "fms_v2",
-            JSON.stringify(entries)
-        );
-
-    }
-    catch(err){
-
-        entries=JSON.parse(
-            localStorage.getItem("fms_v2") || "[]"
-        );
-
-    }
-
-    renderTable();
-
-}
-
-loadData();
-
-toggleLost();
 
 renderTable();
-    
+</script>
